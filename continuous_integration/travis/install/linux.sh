@@ -12,7 +12,7 @@ CMAKE_VERSION="$4"
 APT_GET_INSTALL='sudo -E apt-get -yq --no-install-suggests --no-install-recommends install'
 
 if [ "${CPU_ARCH}" = "amd64" ]; then
-	sudo mkdir -p ${CMAKE_VERSION} && sudo wget -qO- "https://cmake.org/files/v3.16/${CMAKE_VERSION}-Linux-x86_64.tar.gz"  | sudo tar --strip-components=1 -xz -C ${CMAKE_VERSION} ;
+	sudo mkdir -p "cmake-${CMAKE_VERSION}" && sudo wget -qO- "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"  | sudo tar --strip-components=1 -xz -C "cmake-${CMAKE_VERSION}" ;
 fi
 
 case "${COMPILER}" in
@@ -29,15 +29,15 @@ sudo apt-get update -yq
 case "${ARCH}" in
 	x64)
 		${APT_GET_INSTALL} \
-			gcc-9 \
-			g++-9 \
+			gcc-10 \
+			g++-10 \
 			libsdl2-dev
 		;;
 
 	x86)
 		${APT_GET_INSTALL} \
-			gcc-9-multilib \
-			g++-9-multilib \
+			gcc-10-multilib \
+			g++-10-multilib \
 			libc6:i386 \
 			libstdc++6:i386 \
 			zlib1g-dev:i386 \

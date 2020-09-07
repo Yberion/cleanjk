@@ -17,7 +17,7 @@
 
 language: cpp
 os: linux
-dist: bionic
+dist: focal
 
 # https://docs.travis-ci.com/user/environment-variables/
 
@@ -44,6 +44,8 @@ dist: bionic
 # https://launchpad.net/ubuntu/+source/gcc-mingw-w64
 # https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/cross_compiling/Mingw
 
+# Check https://gist.github.com/steinwaywhw/a4cd19cda655b8249d908261a62687f8 to get latest release from the GitHub repo
+
 # https://docs.travis-ci.com/user/caching/
 cache: ccache
 
@@ -51,7 +53,7 @@ before_install:
   - |
     if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       chmod +x ./continuous_integration/travis/install/linux.sh ;
-      export CMAKE_VERSION=cmake-3.16.3 ;
+      export CMAKE_VERSION=3.18.2 ;
     fi
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then chmod +x ./continuous_integration/travis/build/linux_osx.sh ; fi
   - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then export PATH=$MSBUILD_PATH:$PATH ; fi
@@ -65,13 +67,13 @@ before_script:
     - if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_CPU_ARCH}" = "amd64" ]; then export PATH=`pwd`/${CMAKE_VERSION}/bin:$PATH ; fi
     - |
       if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_COMPILER}" = "gcc" ]; then
-        export CC=gcc-9 ;
-        export CXX=g++-9 ;
+        export CC=gcc-10 ;
+        export CXX=g++-10 ;
       fi
     - |
       if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_COMPILER}" = "clang" ]; then
-        export CC=clang-9 ;
-        export CXX=clang++-9 ;
+        export CC=clang-10 ;
+        export CXX=clang++-10 ;
       fi
 
 script:
@@ -82,7 +84,7 @@ script:
 addons:
   apt:
     sources:
-      # For gcc-9 g++-9 / gcc-9-multilib g++-9-multilib (see continuous_integration -> travis -> install -> linux)
+      # For gcc-10 g++-10 / gcc-10-multilib g++-10-multilib (see continuous_integration -> travis -> install -> linux)
       - sourceline: 'ppa:ubuntu-toolchain-r/test'
   homebrew:
     packages:
@@ -99,48 +101,48 @@ jobs:
     #           RELEASE          
     # ===========================
 
-    - name: "(Release) x64 [GCC 9] - Ubuntu 18.04"
+    - name: "(Release) x64 [GCC 10] - Ubuntu 20.04"
       compiler: gcc
 
-    - name: "(Release) arm64 [GCC 9] - Ubuntu 18.04"
+    - name: "(Release) arm64 [GCC 10] - Ubuntu 20.04"
       arch: arm64
       compiler: gcc
       
-#    - name: "(Release) x64 [clang 9] - Ubuntu 18.04"
+#    - name: "(Release) x64 [clang 10] - Ubuntu 20.04"
 #      compiler: clang
       
-#    - name: "(Release) arm64 [clang 9] - Ubuntu 18.04"
+#    - name: "(Release) arm64 [clang 10] - Ubuntu 20.04"
 #      arch: arm64
 #      compiler: clang
 
-    - name: "(Release) x64 [Visual Studio 2017] - Windows Server, version 1803"
+    - name: "(Release) x64 [Visual Studio 2017] - Windows Server, version 1809"
       os: windows
       env: MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
 
-    - name: "(Release) x64 [Apple clang version 11.0.0] - macOS 10.14"
+    - name: "(Release) x64 [Apple clang version 12.0.0 (clang-1200.0.31.1) (LLVM 10.0.0)] - macOS 10.15.5"
       os: osx
-      osx_image: xcode11.3
+      osx_image: xcode12u
       compiler: clang
 
-    - name: "(Release) x64 [MinGW-64 7] - Ubuntu 18.04"
+    - name: "(Release) x64 [MinGW-64 9.3.0] - Ubuntu 20.04"
       compiler: gcc
       env: ARCH=x86_64-w64-mingw32
 
-    - name: "(Release) x86 [GCC 9] - Ubuntu 18.04"
+    - name: "(Release) x86 [GCC 10] - Ubuntu 20.04"
       compiler: gcc
       env: ARCH=x86
 
- #   - name: "(Release) x86 [clang 9] - Ubuntu 18.04"
+ #   - name: "(Release) x86 [clang 10] - Ubuntu 20.04"
  #     compiler: clang
  #     env: ARCH=x86
 
-    - name: "(Release) x86 [Visual Studio 2017] - Windows Server, version 1803"
+    - name: "(Release) x86 [Visual Studio 2017] - Windows Server, version 1809"
       os: windows
       env: 
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - ARCH=x86
 
-    - name: "(Release) x86 [MinGW-64 7] - Ubuntu 18.04"
+    - name: "(Release) x86 [MinGW-64 9.3.0] - Ubuntu 20.04"
       compiler: gcc
       env: ARCH=i686-w64-mingw32
 
@@ -148,49 +150,49 @@ jobs:
     #           DEBUG          
     # =========================
 
-    - name: "(Debug) x64 [GCC 9] - Ubuntu 18.04"
+    - name: "(Debug) x64 [GCC 10] - Ubuntu 20.04"
       compiler: gcc
       env: CMAKE_BUILD_TYPE=Debug
 
-#    - name: "(Debug) arm64 [GCC 9] - Ubuntu 18.04"
+#    - name: "(Debug) arm64 [GCC 10] - Ubuntu 20.04"
 #      arch: arm64
 #      compiler: gcc
 #      env: CMAKE_BUILD_TYPE=Debug
       
-#    - name: "(Debug) x64 [clang 9] - Ubuntu 18.04"
+#    - name: "(Debug) x64 [clang 10] - Ubuntu 20.04"
 #      compiler: clang
 #      env: CMAKE_BUILD_TYPE=Debug
       
-#    - name: "(Debug) arm64 [clang 9] - Ubuntu 18.04"
+#    - name: "(Debug) arm64 [clang 10] - Ubuntu 20.04"
 #      arch: arm64
 #      compiler: clang
 #      env: CMAKE_BUILD_TYPE=Debug
 
-    - name: "(Debug) x64 [Visual Studio 2017] - Windows Server, version 1803"
+    - name: "(Debug) x64 [Visual Studio 2017] - Windows Server, version 1809"
       os: windows
       env: 
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - CMAKE_BUILD_TYPE=Debug
 
-#    - name: "(Debug) x64 [Apple clang version 11.0.0] - macOS 10.14"
+#    - name: "(Debug) x64 [Apple clang version 12.0.0 (clang-1200.0.31.1) (LLVM 10.0.0)] - macOS 10.15.5"
 #      os: osx
-#      osx_image: xcode11.3
+#      osx_image: xcode12u
 #      compiler: clang
 #      env: CMAKE_BUILD_TYPE=Debug
 
-    - name: "(Debug) x86 [GCC 9] - Ubuntu 18.04"
+    - name: "(Debug) x86 [GCC 10] - Ubuntu 20.04"
       compiler: gcc
       env: 
         - CMAKE_BUILD_TYPE=Debug
         - ARCH=x86
 
-#    - name: "(Debug) x86 [clang 9] - Ubuntu 18.04"
+#    - name: "(Debug) x86 [clang 10] - Ubuntu 20.04"
 #      compiler: clang
 #      env: 
 #        - CMAKE_BUILD_TYPE=Debug
 #        - ARCH=x86
 
-    - name: "(Debug) x86 [Visual Studio 2017] - Windows Server, version 1803"
+    - name: "(Debug) x86 [Visual Studio 2017] - Windows Server, version 1809"
       os: windows
       env: 
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
