@@ -9,7 +9,7 @@ COMPILER="$2"
 CPU_ARCH="$3"
 CMAKE_VERSION="$4"
 
-APT_GET_INSTALL='sudo -E apt-get -yq --no-install-suggests --no-install-recommends install'
+APT_GET_INSTALL='sudo -E apt-get -yq APT::Immediate-Configure=false --no-install-suggests --no-install-recommends install'
 
 if [ "${CPU_ARCH}" = "amd64" ]; then
 	sudo mkdir -p "cmake-${CMAKE_VERSION}" && sudo wget -qO- "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"  | sudo tar --strip-components=1 -xz -C "cmake-${CMAKE_VERSION}" ;
@@ -35,13 +35,12 @@ case "${ARCH}" in
 		;;
 
 	x86)
-		# libgcc-s1:i386 is needed before installing libc6:i386, it seems we can also use APT::Immediate-Configure=false
+		# libgcc-s1:i386 is needed before installing libc6:i386 (doesn't work), it seems we can also use APT::Immediate-Configure=false
 		# https://bugs.launchpad.net/ubuntu/+source/ubiquity/+bug/1871268
 		# https://github.com/Winetricks/winetricks/issues/1525
 		${APT_GET_INSTALL} \
 			gcc-10-multilib \
 			g++-10-multilib \
-			libgcc-s1:i386 \
 			libc6:i386 \
 			libstdc++6:i386 \
 			zlib1g-dev:i386 \
