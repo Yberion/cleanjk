@@ -38,7 +38,7 @@ case "${ARCH}" in
 		# libgcc-s1:i386 is needed before installing libc6:i386, it seems we can also use APT::Immediate-Configure=false (doesn't work)
 		# https://bugs.launchpad.net/ubuntu/+source/ubiquity/+bug/1871268
 		# https://github.com/Winetricks/winetricks/issues/1525
-		${APT_GET_INSTALL} libgcc-s1:i386 ;;
+		${APT_GET_INSTALL} libgcc-s1:i386
 		${APT_GET_INSTALL} \
 			gcc-10-multilib \
 			g++-10-multilib \
